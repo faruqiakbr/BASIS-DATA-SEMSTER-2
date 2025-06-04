@@ -1943,19 +1943,21 @@
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="btnTambahObat" min="-2" pref="166" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="btnHapusObat" min="-2" pref="166" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="btNKembaliObat" min="-2" pref="166" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
                                                   <Component id="Banyak_Obat" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="jSpinnerBanyakObat" min="-2" pref="100" max="-2" attributes="0"/>
                                               </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="btnTambahObat" min="-2" pref="166" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="btnHapusObat" min="-2" pref="166" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="btNUpdateObat" min="-2" pref="166" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="btNKembaliObat" min="-2" pref="166" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="591" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="419" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -1995,6 +1997,7 @@
                                               <Component id="btnTambahObat" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                               <Component id="btnHapusObat" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                               <Component id="btNKembaliObat" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                                              <Component id="btNUpdateObat" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" attributes="0">
@@ -2150,6 +2153,17 @@
                         </Component>
                         <Component class="javax.swing.JSpinner" name="jSpinnerBanyakObat">
                         </Component>
+                        <Component class="javax.swing.JButton" name="btNUpdateObat">
+                          <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Segoe UI" size="12" style="1"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="UPDATE"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btNUpdateObatActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane3">
@@ -2287,7 +2301,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" pref="529" max="32767" attributes="0"/>
+                              <Component id="jScrollPane5" pref="519" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -2311,7 +2325,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <EmptySpace min="0" pref="194" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="204" max="32767" attributes="0"/>
                               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
@@ -2360,9 +2374,11 @@
                                               <Component id="btnTAMBAHTransaksi" min="-2" pref="166" max="-2" attributes="0"/>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               <Component id="btnHAPUSTransaksi" min="-2" pref="166" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="btNUPDATETransaksi" min="-2" pref="166" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="btNKEMBALITransaksi" min="-2" pref="166" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -2393,8 +2409,9 @@
                                           <Component id="btnTAMBAHTransaksi" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                           <Component id="btnHAPUSTransaksi" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                           <Component id="btNKEMBALITransaksi" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="btNUPDATETransaksi" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="16" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2493,6 +2510,17 @@
                               </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btNKEMBALITransaksiActionPerformed"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="btNUPDATETransaksi">
+                              <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                  <Font name="Segoe UI" size="12" style="1"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="UPDATE"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btNUPDATETransaksiActionPerformed"/>
                               </Events>
                             </Component>
                           </SubComponents>

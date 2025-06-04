@@ -518,6 +518,43 @@ public class mainView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Pilih baris yang ingin di-update terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
         }
     }
+    
+    private void updateObat() {
+        int selectedRow = jTable_Obat.getSelectedRow();
+
+        if (selectedRow >= 0) {
+            String id = ID_ObatTextField.getText().trim();
+            String nama = (String) jComboBoxNamaObat.getSelectedItem();
+            boolean tidakTersedia = JCheckBoxTidaktersedia.isSelected();
+            int jumlah = tidakTersedia ? 0 : (Integer) jSpinnerBanyakObat.getValue();
+            String harga = TextFieldHargaObat.getText().trim();
+
+            DefaultTableModel modelObat = (DefaultTableModel) jTable_Obat.getModel();
+            modelObat.setValueAt(id, selectedRow, 0);
+            modelObat.setValueAt(nama, selectedRow, 1);
+            modelObat.setValueAt(tidakTersedia, selectedRow, 2);
+            modelObat.setValueAt(jumlah, selectedRow, 3);
+            modelObat.setValueAt(harga, selectedRow, 4);
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin di-update terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void updateTransaksi() {
+        int selectedRow = jTable_Obat.getSelectedRow();
+
+        if (selectedRow >= 0) {
+            String id = JTextFieldIDTransaksi.getText().trim();
+            String tanggal = JTextFieldTanggalTransaksi.getText().trim();
+            String total = JTextFieldTotalTransaksi.getText().trim();
+
+            DefaultTableModel modelObat = (DefaultTableModel) jTable_Obat.getModel();
+            modelObat.setValueAt(id, selectedRow, 0);
+            modelObat.setValueAt(tanggal, selectedRow, 1);
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin di-update terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
     private void tambahPerawat() {
         String id = txtFieldIDPerawat.getText().trim();
@@ -750,6 +787,7 @@ public class mainView extends javax.swing.JFrame {
         JCheckBoxTidaktersedia = new javax.swing.JCheckBox();
         jComboBoxNamaObat = new javax.swing.JComboBox<>();
         jSpinnerBanyakObat = new javax.swing.JSpinner();
+        btNUpdateObat = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable_Obat = new javax.swing.JTable();
         transaksiPanel = new javax.swing.JPanel();
@@ -767,6 +805,7 @@ public class mainView extends javax.swing.JFrame {
         btnTAMBAHTransaksi = new javax.swing.JButton();
         btnHAPUSTransaksi = new javax.swing.JButton();
         btNKEMBALITransaksi = new javax.swing.JButton();
+        btNUPDATETransaksi = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         JTableTransaksi = new javax.swing.JTable();
         ruanganPanel = new javax.swing.JPanel();
@@ -1357,7 +1396,7 @@ public class mainView extends javax.swing.JFrame {
                                     .addComponent(jLabel17)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtFieldTgglMasukPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 334, Short.MAX_VALUE)))
+                        .addGap(0, 571, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -1947,6 +1986,14 @@ public class mainView extends javax.swing.JFrame {
             }
         });
 
+        btNUpdateObat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btNUpdateObat.setText("UPDATE");
+        btNUpdateObat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNUpdateObatActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -1975,16 +2022,18 @@ public class mainView extends javax.swing.JFrame {
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addComponent(Banyak_Obat)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSpinnerBanyakObat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addComponent(btnTambahObat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnHapusObat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btNKembaliObat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addComponent(Banyak_Obat)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSpinnerBanyakObat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 591, Short.MAX_VALUE)))
+                                .addComponent(btNUpdateObat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btNKembaliObat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 419, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -2015,7 +2064,8 @@ public class mainView extends javax.swing.JFrame {
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnTambahObat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnHapusObat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btNKembaliObat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btNKembaliObat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btNUpdateObat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addComponent(TextFieldHargaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -2158,6 +2208,14 @@ public class mainView extends javax.swing.JFrame {
             }
         });
 
+        btNUPDATETransaksi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btNUPDATETransaksi.setText("UPDATE");
+        btNUPDATETransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNUPDATETransaksiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Namelanel11Layout = new javax.swing.GroupLayout(Namelanel11);
         Namelanel11.setLayout(Namelanel11Layout);
         Namelanel11Layout.setHorizontalGroup(
@@ -2181,9 +2239,11 @@ public class mainView extends javax.swing.JFrame {
                         .addComponent(btnTAMBAHTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnHAPUSTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btNUPDATETransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btNKEMBALITransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 407, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         Namelanel11Layout.setVerticalGroup(
@@ -2206,8 +2266,9 @@ public class mainView extends javax.swing.JFrame {
                 .addGroup(Namelanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTAMBAHTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnHAPUSTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btNKEMBALITransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btNKEMBALITransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btNUPDATETransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
@@ -2223,7 +2284,7 @@ public class mainView extends javax.swing.JFrame {
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 194, Short.MAX_VALUE)
+            .addGap(0, 204, Short.MAX_VALUE)
             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel12Layout.createSequentialGroup()
                     .addContainerGap()
@@ -2263,7 +2324,7 @@ public class mainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -3963,6 +4024,14 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldJumlahPerawatDashboardActionPerformed
 
+    private void btNUpdateObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNUpdateObatActionPerformed
+        btnUpdateDokter.addActionListener(e -> updateObat());
+    }//GEN-LAST:event_btNUpdateObatActionPerformed
+
+    private void btNUPDATETransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNUPDATETransaksiActionPerformed
+        btnUpdateDokter.addActionListener(e -> updateTransaksi());
+    }//GEN-LAST:event_btNUPDATETransaksiActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -4020,6 +4089,8 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JButton btNKEMBALIRekamMedis;
     private javax.swing.JButton btNKEMBALITransaksi;
     private javax.swing.JButton btNKembaliObat;
+    private javax.swing.JButton btNUPDATETransaksi;
+    private javax.swing.JButton btNUpdateObat;
     private javax.swing.JButton btnCariManagementRuangan;
     private javax.swing.JButton btnCariObat3;
     private javax.swing.JButton btnCariRekamMedis;

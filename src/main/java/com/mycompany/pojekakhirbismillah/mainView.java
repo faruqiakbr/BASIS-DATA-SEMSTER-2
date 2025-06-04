@@ -26,6 +26,98 @@ import javax.swing.table.DefaultTableModel;
  * @author faruq
  */
 public class mainView extends javax.swing.JFrame {
+    private void loadDataPerawat() {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+        DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
+        model.setRowCount(0); // clear tabel
+        
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT * FROM PERAWAT";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("ID_PERAWAT");
+                String nama = rs.getString("NAMA_PERAWAT");
+                String jenisKelamin = rs.getString("JENIS_PERAWAT");
+                String umur = rs.getString("UMUR");
+                String alamat = rs.getString("ALAMAT");
+                String noTelepon = rs.getString("NOMOR_TELEPHONE");
+                String unit = rs.getString("SPESIALISASI");
+                String shift = rs.getString("BONUS");
+
+                model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, unit, shift});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal memuat data PERAWAT: " + e.getMessage());
+        }
+    }
+    private void loadDataDokter() {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+        DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
+        model.setRowCount(0); // clear tabel
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT * FROM DOKTER";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("ID_DOKTER");
+                String nama = rs.getString("NAMA_DOKTER");
+                String jenisKelamin = rs.getString("JENIS_KELAMIN");
+                String umur = rs.getString("UMUR");
+                String alamat = rs.getString("ALAMAT");
+                String noTelepon = rs.getString("NOMOR_TELEPHONE");
+                String spesialisasi = rs.getString("SPESIALISASI");
+                String tunjangan = rs.getString("BONUS");
+
+                model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, spesialisasi, tunjangan});
+            }
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal memuat data DOKTER: " + e.getMessage());
+        }
+    }
+    
+    private void loadDataPasien() {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+        DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
+        model.setRowCount(0); // clear tabel
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT * FROM PASIEN";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("ID_PASIEN");
+                String namaPasien = rs.getString("NAMA");
+                String jenisKelaminPasien = rs.getString("JENIS_KELAMIN");
+                String umurPasien = rs.getString("UMUR");
+                String alamatPasien = rs.getString("ALAMAT");
+                String noTelpPasien = rs.getString("NOMOR_TELEPHONE");
+                String tanggalMasukPasien = rs.getString("TANGGAL_MASUK");
+                String tanggalKeluarPasien = rs.getString("TANGGAL_KELUAR");
+
+                model.addRow(new Object[]{id, namaPasien, jenisKelaminPasien, umurPasien, alamatPasien, noTelpPasien, tanggalMasukPasien, tanggalKeluarPasien});
+            }
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal memuat data Pasien: " + e.getMessage());
+        }
+    }
 
     private void loadDataRuangan() {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
@@ -248,6 +340,7 @@ public class mainView extends javax.swing.JFrame {
 
     public mainView() {
         initComponents();
+        
         // Untuk Pasien
         jComboBoxJenisKelaminPasien.removeAllItems();
         jComboBoxJenisKelaminPasien.addItem("Laki-Laki");
@@ -267,6 +360,10 @@ public class mainView extends javax.swing.JFrame {
         loadDataRekamMedis();
         loadDataRuangan();
         loadDataInventaris();
+        loadDataPasien();
+        loadDataDokter();
+        loadDataPerawat();
+                
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -1043,7 +1140,7 @@ public class mainView extends javax.swing.JFrame {
                                     .addComponent(jLabel17)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtFieldTgglMasukPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 571, Short.MAX_VALUE)))
+                        .addGap(0, 334, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -1168,7 +1265,7 @@ public class mainView extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pasienPanelLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 692, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pasienPanelLayout.setVerticalGroup(
@@ -2942,17 +3039,44 @@ public class mainView extends javax.swing.JFrame {
 
     private void btnTambahPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahPasienActionPerformed
         tambahPasien();
+        loadDataPasien();
     }//GEN-LAST:event_btnTambahPasienActionPerformed
 
     private void btnHapusPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusPasienActionPerformed
+        loadDataPasien();
         int selectedRow = tabelDataPasien.getSelectedRow();
-
+        loadDataRekamMedis();
         if (selectedRow != -1) {
-            DefaultTableModel model = (DefaultTableModel) tabelDataPasien.getModel();
-            model.removeRow(selectedRow);
+            String id = tabelDataPasien.getValueAt(selectedRow, 0).toString();
+            System.out.println("ID yang akan dihapus: [" + id + "]");
+
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+            String user = "naila01";
+            String password = "root";
+
+            try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                String sql = "DELETE FROM PASIEN WHERE ID_PASIEN = ?";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, id);
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    // Hapus dari JTable setelah sukses hapus dari DB
+                    DefaultTableModel model = (DefaultTableModel) tabelDataPasien.getModel();
+                    model.removeRow(selectedRow);
+                    System.out.println("Data berhasil dihapus dari database.");
+                } else {
+                    System.out.println("Data tidak ditemukan di database.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Gagal menghapus dari database: " + e.getMessage());
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus!");
-        }     // TODO add your handling code here:  
+        }
+        
+            // TODO add your handling code here:  
     }//GEN-LAST:event_btnHapusPasienActionPerformed
 
     private void btnUpdatePasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePasienActionPerformed
@@ -3002,6 +3126,7 @@ public class mainView extends javax.swing.JFrame {
     private void btnTAMBAHRekamMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTAMBAHRekamMedisActionPerformed
         TambahRekam();
         loadDataRekamMedis();
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTAMBAHRekamMedisActionPerformed
 
@@ -3420,21 +3545,54 @@ public class mainView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateDokterActionPerformed
 
     private void btnHapusDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusDokterActionPerformed
-        int selectedRow = tabelDataDokter.getSelectedRow();
+        btnHapusDokter.addActionListener(e -> {
+            int selectedRow = tabelDataDokter.getSelectedRow();
+            if (selectedRow != -1) {
+                DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
 
-        if (selectedRow != -1) {
-            String id = tabelDataDokter.getValueAt(selectedRow, 0).toString(); // ambil ID dari baris yang dipilih
+                String id = (String) model.getValueAt(selectedRow, 0);
 
-            // Hapus dari JTable
-            DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
-            model.removeRow(selectedRow);
-        } else {
-            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus!");
-        }  // TODO add your handling code here:     
+                String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+                String user = "naila01";
+                String password = "root";
+
+                try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                    String sql = "DELETE FROM DOKTER WHERE ID_DOKTER = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, id);
+                    int rowsAffected = stmt.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        model.removeRow(selectedRow);
+                        JOptionPane.showMessageDialog(null, "Dokter berhasil dihapus dari database dan tabel.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Data tidak ditemukan di database.");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus data: " + ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus terlebih dahulu.");
+            }
+        });
+//        
+//        int selectedRow = tabelDataDokter.getSelectedRow();
+//
+//        if (selectedRow != -1) {
+//            String id = tabelDataDokter.getValueAt(selectedRow, 0).toString(); // ambil ID dari baris yang dipilih
+//
+//            // Hapus dari JTable
+//            DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
+//            model.removeRow(selectedRow);
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus!");
+//        }  // TODO add your handling code here:     
     }//GEN-LAST:event_btnHapusDokterActionPerformed
 
     private void btnTambahDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahDokterActionPerformed
         tambahDokter();
+        loadDataDokter();
     }//GEN-LAST:event_btnTambahDokterActionPerformed
 
     private void cariIDDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariIDDokterActionPerformed
@@ -3504,6 +3662,7 @@ public class mainView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdatePerawatActionPerformed
 
     private void btnHapusPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusPerawatActionPerformed
+        loadDataPerawat();
         int selectedRow = tabelDataPerawat.getSelectedRow();
 
         if (selectedRow != -1) {
@@ -3519,6 +3678,7 @@ public class mainView extends javax.swing.JFrame {
 
     private void btnTambahPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahPerawatActionPerformed
         tambahPerawat();
+        loadDataPerawat();
     }//GEN-LAST:event_btnTambahPerawatActionPerformed
 
     private void cariIDPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariIDPerawatActionPerformed
@@ -3567,6 +3727,7 @@ public class mainView extends javax.swing.JFrame {
 
     private void jButtonRefreshDataPegawaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshDataPegawaiActionPerformed
         tampilkanSemuaPegawai();
+//        loadDataPegawai();
     }//GEN-LAST:event_jButtonRefreshDataPegawaiActionPerformed
 
     private void jButtonCariPegawaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCariPegawaiActionPerformed

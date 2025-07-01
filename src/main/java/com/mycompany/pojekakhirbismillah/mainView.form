@@ -309,7 +309,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="974" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="1069" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jPanel2" max="32767" attributes="0"/>
                           </Group>
@@ -707,7 +707,7 @@
                               <Component id="jPanel1" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel5" min="-2" pref="196" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="692" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="1000" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -854,7 +854,7 @@
                                                   </Group>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="571" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="642" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -1199,7 +1199,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" pref="210" max="-2" attributes="0"/>
-                          <EmptySpace pref="921" max="32767" attributes="0"/>
+                          <EmptySpace pref="992" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -1322,7 +1322,7 @@
                                           <Component id="jButtonKePanelPerawat" min="-2" pref="113" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="jButtonRefreshDataPegawai" min="-2" pref="113" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="591" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="653" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -1548,7 +1548,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="NamelLabel7RekamMedis" min="-2" pref="239" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="888" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="959" max="32767" attributes="0"/>
                               </Group>
                               <Component id="NamelPanel9RekamMedis" max="32767" attributes="0"/>
                           </Group>
@@ -1784,7 +1784,8 @@
                         <Component class="javax.swing.JTable" name="tableRekamMedis">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="3" rowCount="0">
+                              <Table columnCount="4" rowCount="0">
+                                <Column editable="true" title="ID Pasien" type="java.lang.Object"/>
                                 <Column editable="true" title="ID Rekam Medis" type="java.lang.Object"/>
                                 <Column editable="true" title="Tanggal" type="java.lang.Object"/>
                                 <Column editable="true" title="Diagnosa" type="java.lang.Object"/>
@@ -1792,6 +1793,11 @@
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>
@@ -1955,7 +1961,7 @@
                                                   <Component id="jSpinnerBanyakObat" min="-2" pref="100" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="591" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="662" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -2275,7 +2281,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jPanel12" max="32767" attributes="0"/>
-                                  <Component id="jScrollPane5" pref="1113" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane5" pref="1184" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -3384,7 +3390,7 @@
                                     <Column editable="false" title="Alamat" type="java.lang.Object"/>
                                     <Column editable="false" title="No. Telepon" type="java.lang.Object"/>
                                     <Column editable="false" title="Spesialisasi" type="java.lang.Object"/>
-                                    <Column editable="false" title="Bonus" type="java.lang.Object"/>
+                                    <Column editable="false" title="Tunjangan" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -3608,7 +3614,7 @@
                                                   <Component id="btnKembaliPerawat" min="-2" pref="166" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="393" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="464" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>

@@ -26,6 +26,38 @@ import javax.swing.table.DefaultTableModel;
  * @author faruq
  */
 public class mainView extends javax.swing.JFrame {
+    private void setupTabelListener() {
+        tabelDataDokter.getSelectionModel().addListSelectionListener(e -> {
+            int row = tabelDataDokter.getSelectedRow();
+            if (row >= 0) {
+                // Simpan ID lama dari tabel ke variabel
+                idDokterLama = tabelDataDokter.getValueAt(row, 0).toString();
+
+                // Set isi form berdasarkan baris yang dipilih
+                txtFieldIdDokter.setText(idDokterLama);
+                txtFieldNamaDokter.setText(tabelDataDokter.getValueAt(row, 1).toString());
+                jComboBoxJenisKelaminDokter.setSelectedItem(tabelDataDokter.getValueAt(row, 2).toString());
+                txtFieldUmurPasienDokter.setText(tabelDataDokter.getValueAt(row, 3).toString());
+                txtFieldAlamatDokter.setText(tabelDataDokter.getValueAt(row, 4).toString());
+                txtFieldNoTelpDokter.setText(tabelDataDokter.getValueAt(row, 5).toString());
+                jComboBoxSpesialisasiDokter.setSelectedItem(tabelDataDokter.getValueAt(row, 6).toString());
+                txtFieldTunjanganSpesialisasi.setText(tabelDataDokter.getValueAt(row, 7).toString());
+            }
+        });
+    }
+    public class FormDokter extends javax.swing.JFrame {
+
+        private String idDokterLama;
+
+        public FormDokter() {
+            initComponents();       
+            loadDataDokter();    
+            setupTabelListener();    
+        }
+    }
+
+
+    private String idDokterLama;
     private void loadDataPerawat() {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
         String user = "naila01"; // replace this
@@ -41,12 +73,12 @@ public class mainView extends javax.swing.JFrame {
             while (rs.next()) {
                 String id = rs.getString("ID_PERAWAT");
                 String nama = rs.getString("NAMA_PERAWAT");
-                String jenisKelamin = rs.getString("JENIS_PERAWAT");
+                String jenisKelamin = rs.getString("JENIS_KELAMIN");
                 String umur = rs.getString("UMUR");
                 String alamat = rs.getString("ALAMAT");
                 String noTelepon = rs.getString("NOMOR_TELEPHONE");
-                String unit = rs.getString("SPESIALISASI");
-                String shift = rs.getString("BONUS");
+                String unit = rs.getString("UNIT");
+                String shift = rs.getString("SHIFT");
 
                 model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, unit, shift});
             }
@@ -75,7 +107,7 @@ public class mainView extends javax.swing.JFrame {
                 String alamat = rs.getString("ALAMAT");
                 String noTelepon = rs.getString("NOMOR_TELEPHONE");
                 String spesialisasi = rs.getString("SPESIALISASI");
-                String tunjangan = rs.getString("BONUS");
+                String tunjangan = rs.getString("TUNJANGAN");
 
                 model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, spesialisasi, tunjangan});
             }
@@ -91,7 +123,7 @@ public class mainView extends javax.swing.JFrame {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
         String user = "naila01"; // replace this
         String password = "root"; // replace this
-        DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabelDataPasien.getModel();
         model.setRowCount(0); // clear tabel
 
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
@@ -415,6 +447,30 @@ public class mainView extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) tabelDataPasien.getModel();
         model.addRow(new Object[]{id, namaPasien, jenisKelaminPasien, umurPasien, alamatPasien, noTelpPasien, tanggalMasukPasien, tanggalKeluarPasien});
+        
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "INSERT INTO PASIEN (ID_PASIEN, NAMA, JENIS_KELAMIN, UMUR, ALAMAT, NOMOR_TELEPHONE, TANGGAL_MASUK, TANGGAL_KELUAR) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, id);
+            stmt.setString(2, namaPasien);
+            stmt.setString(3, jenisKelaminPasien);
+            stmt.setString(4, umurPasien);
+            stmt.setString(5, alamatPasien);
+            stmt.setString(6, noTelpPasien);
+            stmt.setString(7, tanggalMasukPasien);
+            stmt.setString(8, tanggalKeluarPasien);
+
+            stmt.executeUpdate();
+            System.out.println("Data berhasil disimpan ke database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal menyimpan ke database: " + e.getMessage());
+        }
+
     }
 
     private void cariPasien() {
@@ -471,8 +527,37 @@ public class mainView extends javax.swing.JFrame {
         String spesialisasi = jComboBoxSpesialisasiDokter.getSelectedItem().toString();
         String tunjangan = txtFieldTunjanganSpesialisasi.getText().trim();
 
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID dokter tidak boleh kosong!");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
         model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, spesialisasi, tunjangan});
+
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "INSERT INTO DOKTER (ID_DOKTER, NAMA_DOKTER, JENIS_KELAMIN, UMUR, ALAMAT, NOMOR_TELEPHONE, SPESIALISASI, TUNJANGAN) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, id);
+            stmt.setString(2, nama);
+            stmt.setString(3, jenisKelamin);
+            stmt.setString(4, umur);
+            stmt.setString(5, alamat);
+            stmt.setString(6, noTelepon);
+            stmt.setString(7, spesialisasi);
+            stmt.setString(8, tunjangan);
+
+            stmt.executeUpdate();
+            System.out.println("Data berhasil disimpan ke database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal menyimpan ke database: " + e.getMessage());
+        }
+        
     }
 
     private void cariDokter() {
@@ -491,33 +576,64 @@ public class mainView extends javax.swing.JFrame {
     }
 
     private void updateDokter() {
-        int selectedRow = tabelDataDokter.getSelectedRow();
+    int selectedRow = tabelDataDokter.getSelectedRow();
+    String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+    String user = "naila01";
+    String password = "root";
 
-        if (selectedRow >= 0) {
-            // Ambil data dari text field
-            String id = txtFieldIdDokter.getText().trim();
-            String nama = txtFieldNamaDokter.getText().trim();
-            String jenisKelamin = jComboBoxJenisKelaminDokter.getSelectedItem().toString();
-            String umur = txtFieldUmurPasienDokter.getText().trim();
-            String alamat = txtFieldAlamatDokter.getText().trim();
-            String noTelepon = txtFieldNoTelpDokter.getText().trim();
-            String spesialisasi = jComboBoxSpesialisasiDokter.getSelectedItem().toString();
-            String tunjangan = txtFieldTunjanganSpesialisasi.getText().trim();
+    if (selectedRow >= 0) {
+        String id = txtFieldIdDokter.getText().trim();
+        String nama = txtFieldNamaDokter.getText().trim();
+        String jenisKelamin = jComboBoxJenisKelaminDokter.getSelectedItem().toString();
+        String umur = txtFieldUmurPasienDokter.getText().trim();
+        String alamat = txtFieldAlamatDokter.getText().trim();
+        String noTelepon = txtFieldNoTelpDokter.getText().trim();
+        String spesialisasi = jComboBoxSpesialisasiDokter.getSelectedItem().toString();
+        String tunjangan = txtFieldTunjanganSpesialisasi.getText().trim();
 
-            // Update baris yang dipilih di tabel
-            DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
-            model.setValueAt(id, selectedRow, 0);
-            model.setValueAt(nama, selectedRow, 1);
-            model.setValueAt(jenisKelamin, selectedRow, 2);
-            model.setValueAt(umur, selectedRow, 3);
-            model.setValueAt(alamat, selectedRow, 4);
-            model.setValueAt(noTelepon, selectedRow, 5);
-            model.setValueAt(spesialisasi, selectedRow, 6);
-            model.setValueAt(tunjangan, selectedRow, 7);
-        } else {
-            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin di-update terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE DOKTER SET ID_DOKTER = ?, NAMA_DOKTER = ?, JENIS_KELAMIN = ?, UMUR = ?, ALAMAT = ?, NOMOR_TELEPHONE = ?, SPESIALISASI = ?, TUNJANGAN = ? WHERE ID_DOKTER = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, id);               // ID Dokter baru
+            stmt.setString(2, nama);
+            stmt.setString(3, jenisKelamin);
+            stmt.setString(4, umur);
+            stmt.setString(5, alamat);
+            stmt.setString(6, noTelepon);
+            stmt.setString(7, spesialisasi);
+            stmt.setString(8, tunjangan);
+            stmt.setString(9, idDokterLama);     // ID Dokter lama untuk WHERE
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Update tampilan tabel
+                DefaultTableModel model = (DefaultTableModel) tabelDataDokter.getModel();
+                model.setValueAt(id, selectedRow, 0);
+                model.setValueAt(nama, selectedRow, 1);
+                model.setValueAt(jenisKelamin, selectedRow, 2);
+                model.setValueAt(umur, selectedRow, 3);
+                model.setValueAt(alamat, selectedRow, 4);
+                model.setValueAt(noTelepon, selectedRow, 5);
+                model.setValueAt(spesialisasi, selectedRow, 6);
+                model.setValueAt(tunjangan, selectedRow, 7);
+
+                // Perbarui idDokterLama agar konsisten jika mau update lagi
+                idDokterLama = id;
+
+                JOptionPane.showMessageDialog(null, "Data dokter berhasil diperbarui.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data dokter tidak ditemukan di database.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal mengupdate data: " + ex.getMessage());
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Pilih baris yang ingin di-update terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
     }
+}
+
 
     private void tambahPerawat() {
         String id = txtFieldIDPerawat.getText().trim();
@@ -528,9 +644,37 @@ public class mainView extends javax.swing.JFrame {
         String noTelepon = txtFieldNoTelpPerawat.getText().trim();
         String unit = jComboBoxUnitBagianPerawat.getSelectedItem().toString();
         String shift = jComboBoxShiftPerawat.getSelectedItem().toString();
-
+        
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID perawat tidak boleh kosong!");
+            return;
+        }
         DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
         model.addRow(new Object[]{id, nama, jenisKelamin, umur, alamat, noTelepon, unit, shift});
+
+        
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01"; // replace this
+        String password = "root"; // replace this
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String sql = "INSERT INTO PERAWAT (ID_PERAWAT, NAMA_PERAWAT, JENIS_KELAMIN, UMUR, ALAMAT, NOMOR_TELEPHONE, UNIT, SHIFT) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, id);
+            stmt.setString(2, nama);
+            stmt.setString(3, jenisKelamin);
+            stmt.setString(4, umur);
+            stmt.setString(5, alamat);
+            stmt.setString(6, noTelepon);
+            stmt.setString(7, unit);
+            stmt.setString(8, shift);
+
+            stmt.executeUpdate();
+            System.out.println("Data berhasil disimpan ke database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Gagal menyimpan ke database: " + e.getMessage());
+        }
     }
 
     private void cariPerawat() {
@@ -578,6 +722,9 @@ public class mainView extends javax.swing.JFrame {
 
     //kode nampilin seluruh pegawai di panelPegawai
     private void tampilkanSemuaPegawai() {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+        String user = "naila01";
+        String password = "root";
         DefaultTableModel modelPegawai = new DefaultTableModel();
         modelPegawai.setColumnIdentifiers(new Object[]{"ID Pegawai", "Nama", "Jenis Kelamin", "Sebagai", "Unit/Spesialisasi"});
 
@@ -590,6 +737,7 @@ public class mainView extends javax.swing.JFrame {
             String spesialisasi = modelDokter.getValueAt(i, 6).toString();  // Kolom Spesialisasi (pastikan ini benar)
 
             modelPegawai.addRow(new Object[]{id, nama, jenisKelamin, "Dokter", spesialisasi});
+        
         }
 
         // Ambil data dari tabel Perawat
@@ -1194,7 +1342,7 @@ public class mainView extends javax.swing.JFrame {
                 .addGroup(dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dashboardPanelLayout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(0, 974, Short.MAX_VALUE))
+                        .addGap(0, 1069, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1357,7 +1505,7 @@ public class mainView extends javax.swing.JFrame {
                                     .addComponent(jLabel17)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtFieldTgglMasukPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 334, Short.MAX_VALUE)))
+                        .addGap(0, 642, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -1482,7 +1630,7 @@ public class mainView extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pasienPanelLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 692, Short.MAX_VALUE)))
+                        .addGap(0, 1000, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pasienPanelLayout.setVerticalGroup(
@@ -1572,7 +1720,7 @@ public class mainView extends javax.swing.JFrame {
                         .addComponent(jButtonKePanelPerawat, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonRefreshDataPegawai, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 591, Short.MAX_VALUE)))
+                        .addGap(0, 653, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -1668,7 +1816,7 @@ public class mainView extends javax.swing.JFrame {
             .addGroup(pegawaiPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(921, Short.MAX_VALUE))
+                .addContainerGap(992, Short.MAX_VALUE))
             .addGroup(pegawaiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pegawaiPanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -1817,7 +1965,7 @@ public class mainView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID Rekam Medis", "Tanggal", "Diagnosa"
+                "ID Pasien", "ID Rekam Medis", "Tanggal", "Diagnosa"
             }
         ));
         jScrollPane2.setViewportView(tableRekamMedis);
@@ -1852,7 +2000,7 @@ public class mainView extends javax.swing.JFrame {
                 .addGroup(rekamMedisPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(rekamMedisPanelLayout.createSequentialGroup()
                         .addComponent(NamelLabel7RekamMedis, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 888, Short.MAX_VALUE))
+                        .addGap(0, 959, Short.MAX_VALUE))
                     .addComponent(NamelPanel9RekamMedis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         rekamMedisPanelLayout.setVerticalGroup(
@@ -1984,7 +2132,7 @@ public class mainView extends javax.swing.JFrame {
                                 .addComponent(Banyak_Obat)
                                 .addGap(18, 18, 18)
                                 .addComponent(jSpinnerBanyakObat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 591, Short.MAX_VALUE)))
+                        .addGap(0, 662, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -2254,7 +2402,7 @@ public class mainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelArkhanTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1113, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1184, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelArkhanTransaksiLayout.setVerticalGroup(
@@ -2734,7 +2882,7 @@ public class mainView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID Dokter", "Nama Dokter", "Jenis Kelamin", "Umur", "Alamat", "No. Telepon", "Spesialisasi", "Bonus"
+                "ID Dokter", "Nama Dokter", "Jenis Kelamin", "Umur", "Alamat", "No. Telepon", "Spesialisasi", "Tunjangan"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -2991,7 +3139,7 @@ public class mainView extends javax.swing.JFrame {
                                 .addComponent(btnUpdatePerawat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnKembaliPerawat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 393, Short.MAX_VALUE)))
+                        .addGap(0, 464, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
@@ -3759,6 +3907,7 @@ public class mainView extends javax.swing.JFrame {
 
     private void btnUpdateDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDokterActionPerformed
         btnUpdateDokter.addActionListener(e -> updateDokter());
+
     }//GEN-LAST:event_btnUpdateDokterActionPerformed
 
     private void btnHapusDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusDokterActionPerformed
@@ -3880,17 +4029,37 @@ public class mainView extends javax.swing.JFrame {
 
     private void btnHapusPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusPerawatActionPerformed
         loadDataPerawat();
-        int selectedRow = tabelDataPerawat.getSelectedRow();
+        btnHapusPerawat.addActionListener(e -> {
+            int selectedRow = tabelDataPerawat.getSelectedRow();
+            if (selectedRow != -1) {
+                DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
 
-        if (selectedRow != -1) {
-            String id = tabelDataPerawat.getValueAt(selectedRow, 0).toString(); // ambil ID dari baris yang dipilih
+                String id = (String) model.getValueAt(selectedRow, 0);
 
-            // Hapus dari JTable
-            DefaultTableModel model = (DefaultTableModel) tabelDataPerawat.getModel();
-            model.removeRow(selectedRow);
-        } else {
-            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus!");
-        }  // TODO add your handling code here:     
+                String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+                String user = "naila01";
+                String password = "root";
+
+                try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                    String sql = "DELETE FROM PERAWAT WHERE ID_PERAWAT = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, id);
+                    int rowsAffected = stmt.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        model.removeRow(selectedRow);
+                        JOptionPane.showMessageDialog(null, "Perawat berhasil dihapus dari database dan tabel.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Data tidak ditemukan di database.");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus data: " + ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus terlebih dahulu.");
+            }
+        }); // TODO add your handling code here:     
     }//GEN-LAST:event_btnHapusPerawatActionPerformed
 
     private void btnTambahPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahPerawatActionPerformed

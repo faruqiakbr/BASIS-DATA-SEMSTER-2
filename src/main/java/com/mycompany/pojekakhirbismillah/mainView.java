@@ -3408,7 +3408,6 @@ public class mainView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTambahPasienActionPerformed
 
     private void btnHapusPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusPasienActionPerformed
-        loadDataPasien();
         int selectedRow = tabelDataPasien.getSelectedRow();
         loadDataRekamMedis();
         if (selectedRow != -1) {
@@ -3678,38 +3677,38 @@ public class mainView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTambahObatActionPerformed
 
     private void btnHapusObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusObatActionPerformed
-        loadDataInventaris();
-        btnHapusObat.addActionListener(e -> {
-            int selectedRow = jTable_Obat.getSelectedRow();
-            if (selectedRow != -1) {
-                DefaultTableModel model = (DefaultTableModel) jTable_Obat.getModel();
+        int selectedRow = jTable_Obat.getSelectedRow();
 
-                String idObat = (String) model.getValueAt(selectedRow, 0);
+        if (selectedRow != -1) {
+            String idObat = jTable_Obat.getValueAt(selectedRow, 0).toString(); 
 
-                String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
-                String user = "naila01";
-                String password = "root";
+            DefaultTableModel model = (DefaultTableModel) jTable_Obat.getModel();
+            model.removeRow(selectedRow);
 
-                try (Connection conn = DriverManager.getConnection(url, user, password)) {
-                    String sql = "DELETE FROM Inventaris WHERE ID_OBAT = ?";
-                    PreparedStatement stmt = conn.prepareStatement(sql);
-                    stmt.setString(1, idObat);
-                    int rowsAffected = stmt.executeUpdate();
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=bd;encrypt=true;trustServerCertificate=true;";
+            String user = "naila01";
+            String password = "root";
 
-                    if (rowsAffected > 0) {
-                        model.removeRow(selectedRow);
-                        JOptionPane.showMessageDialog(null, "Obat berhasil dihapus dari database dan tabel.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Data tidak ditemukan di database.");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Gagal menghapus data: " + ex.getMessage());
+            // Hapus dari database
+            try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                String sql = "DELETE FROM Inventaris WHERE ID_OBAT = ?";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, idObat);
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Data berhasil dihapus dari database.");
+                } else {
+                    System.out.println("Data tidak ditemukan di database.");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus terlebih dahulu.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Gagal menghapus dari database: " + e.getMessage());
             }
-        });
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih baris yang ingin dihapus!");
+        } 
+        
     }//GEN-LAST:event_btnHapusObatActionPerformed
 
     private void btNKembaliObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNKembaliObatActionPerformed
